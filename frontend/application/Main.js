@@ -18,6 +18,11 @@ function main() {
 
         // Print
         printJSON(shrinkArray(filteredHistory, 25));
+
+        console.log(sortedHistory.length);
+        console.log(filteredHistory.length);
+        console.log("TEST");
+
     });
 }
 

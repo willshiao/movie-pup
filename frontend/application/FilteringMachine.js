@@ -1,7 +1,7 @@
 const URL = require('url');
 
 // This defines the maximum amount of results we allow of a single domain
-const MAX_RESULTS = 1;
+const MAX_RESULTS = 4;
 
 module.exports = {
     filter
@@ -14,7 +14,9 @@ function filter(data) {
 
     for (var i = 0; i < data.length; i++) {
         var domain = URL.parse(data[i].url).hostname;
-        if (domainMatches(domain) < MAX_RESULTS) {
+        var matchingDomains = domainMatches(domain);
+
+        if (matchingDomains < MAX_RESULTS) {
             filteredData.push(data[i]);
             domains.push(domain);
         }
@@ -26,7 +28,7 @@ function filter(data) {
 function domainMatches(domain) {
     var matches = 0;
     for (var i = 0; i < domains.length; i++) {
-        if (domain[i] == domain) {
+        if (domains[i] == domain) {
             matches++;
         }
     }
