@@ -17,12 +17,7 @@ function main() {
         var filteredHistory = FilteringMachine.filter(sortedHistory);
 
         // Print
-        printJSON(shrinkArray(filteredHistory, 25));
-
-        console.log(sortedHistory.length);
-        console.log(filteredHistory.length);
-        console.log("TEST");
-
+        printJSON(shrinkArray(filteredHistory, 50));
     });
 }
 

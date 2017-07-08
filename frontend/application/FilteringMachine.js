@@ -1,7 +1,7 @@
 const URL = require('url');
 
 // This defines the maximum amount of results we allow of a single domain
-const MAX_RESULTS = 4;
+const MAX_RESULTS = 3;
 
 module.exports = {
     filter
