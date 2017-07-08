@@ -17,7 +17,7 @@ function main() {
         var filteredHistory = FilteringMachine.filter(sortedHistory);
 
         // Print
-        printJSON(shrinkArray(filteredHistory, 50));
+        printJSON(shrinkArray(filteredHistory, 15));
     });
 }
 
