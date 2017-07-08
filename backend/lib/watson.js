@@ -6,7 +6,7 @@ const logger = require('./logger');
 const NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
 
 const nlu = new NaturalLanguageUnderstandingV1(Object.assign(config.get('watson'), {
-  'version_date': NaturalLanguageUnderstandingV1.VERSION_DATE_2017_02_27
+  'version_date': NaturalLanguageUnderstandingV1.VERSION_DATE_2017_02_27,
 }));
 
 const parameters = {
@@ -20,7 +20,7 @@ const parameters = {
     keywords: {
       // emotion: true,
       // sentiment: true,
-      limit: 10,
+      limit: 20,
     },
   },
 };

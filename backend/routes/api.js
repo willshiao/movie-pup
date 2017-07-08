@@ -12,7 +12,7 @@ const tmdb = require('../lib/tmdb');
 router.use(bodyParser.json());
 
 function cleanUp(word) {
-  return word.toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/ +/g, ' ');
+  return word.toLowerCase().replace(/[^a-z ]/g, '').replace(/ +/g, ' ');
 }
 
 //---------------------------
@@ -20,22 +20,24 @@ function cleanUp(word) {
 //---------------------------
 router.get('/', (req, res) => res.successJson({ msg: 'It works!' }));
 
-router.get('/history', (req, res) => {
-  if(!res.body) return res.failMsg('Missing body');
+router.post('/history', (req, res) => {
+  if(!req.body) return res.failMsg('Missing body');
 
   // Asssume input is sorted by "rank" field, which is calculated by the client
-  const items = _.map(res.body, (item) => {
+  const items = _.map(req.body, (item) => {
     item.title = cleanUp(item.title);
     return item;
   });
 
+  return res.successJson(items);
+
   // const topItems = items.slice(config.get('ranking.topHistory'));
 
-  db.all('SELECT * FROM tags LIMIT 100')
-    .then((data) => {
-      res.successJson(data);
-    })
-    .catch(err => res.errorJson(err));
+  // db.all('SELECT * FROM tags LIMIT 100')
+  //   .then((data) => {
+  //     res.successJson(data);
+  //   })
+  //   .catch(err => res.errorJson(err));
 });
 
 router.get('/watson', (req, res) => {
@@ -45,9 +47,9 @@ router.get('/watson', (req, res) => {
 
 router.get('/findTags', (req, res) => {
   console.time('findTags');
-  let watsonInfo;
+  // const urls = [];
 
-  watson.processUrl('https://en.wikipedia.org/wiki/Chess')
+  watson.processUrl('https://en.wikipedia.org/wiki/Fidget_spinner')
     .then((info) => {
       console.log('Got: ', info);
       const queries = [];
