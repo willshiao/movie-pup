@@ -2,7 +2,8 @@
 
 const config = require('config');
 const express = require('express');
-// const Promise = require('bluebird');
+const db = require('sqlite');
+const Promise = require('bluebird');
 // const fs = Promise.promisify(require('fs'));
 
 const logger = require('./lib/logger');
@@ -13,6 +14,12 @@ const apiRoutes = require('./routes/api');
 const app = express();
 app.use(apiRoutes);
 
-app.listen(config.get('app.port'), () => {
-  logger.debug(`Listening on port ${config.get('app.port')}`);
-});
+
+Promise.resolve()
+  .then(() => db.open(config.get('db'), { Promise }))
+  .catch(logger.error)
+  .then(() => {
+    app.listen(config.get('app.port'), () => {
+      logger.debug(`Listening on port ${config.get('app.port')}`);
+    });
+  });

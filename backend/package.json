@@ -10,10 +10,14 @@
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.5.0",
+    "body-parser": "^1.17.2",
     "config": "^1.26.1",
     "express": "^4.15.3",
+    "lodash": "^4.17.4",
     "sequelize": "^4.2.1",
+    "sqlite": "^2.8.0",
     "sqlite3": "^3.1.8",
+    "watson-developer-cloud": "^2.34.0",
     "winston": "^2.3.1"
   },
   "devDependencies": {
