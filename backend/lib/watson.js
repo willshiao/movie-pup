@@ -33,4 +33,10 @@ function processUrl(url, cb) {
   return asyncAnalyze(parameters).asCallback(cb);
 }
 
-module.exports = { processUrl };
+functino processText(text, cb) {
+  delete parameters.url;
+  parameters.text = text;
+  return asyncAnalyze(parameters).asCallback(cb);
+}
+
+module.exports = { processUrl, processText };
