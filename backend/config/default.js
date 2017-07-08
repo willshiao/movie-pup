@@ -11,4 +11,7 @@ module.exports = {
   watson: {
     version: 'v1',
   },
+  tmDB: {
+    apiKey: '',
+  },
 };

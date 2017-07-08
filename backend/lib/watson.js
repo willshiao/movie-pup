@@ -2,6 +2,7 @@
 
 const config = require('config');
 const Promise = require('bluebird');
+const logger = require('./logger');
 const NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
 
 const nlu = new NaturalLanguageUnderstandingV1(Object.assign(config.get('watson'), {
@@ -12,22 +13,23 @@ const parameters = {
   url: '',
   features: {
     entities: {
-      emotion: true,
-      sentiment: true,
+      // emotion: true,
+      // sentiment: true,
       limit: 10,
     },
     keywords: {
-      emotion: true,
-      sentiment: true,
+      // emotion: true,
+      // sentiment: true,
       limit: 10,
     },
   },
 };
 
-const asyncAnalyze = Promise.promisify(nlu.analyze);
+const asyncAnalyze = Promise.promisify(nlu.analyze, { context: nlu });
 
 function processUrl(url, cb) {
   parameters.url = url;
+  logger.debug(`Analyzing URL: ${url}`);
   return asyncAnalyze(parameters).asCallback(cb);
 }
 
