@@ -12,7 +12,12 @@ const tmdb = require('../lib/tmdb');
 router.use(bodyParser.json());
 
 function cleanUp(word) {
-  return word.toLowerCase().replace(/[^a-z ]/g, '').replace(/ +/g, ' ');
+  return word
+    .toLowerCase()
+    .replace(/free|stream|live|watch|online|tips|resign|button/g, '')
+    .replace(/\(.*\)/g, '')
+    .replace(/[^a-z ]/g, '')
+    .replace(/ +/g, ' ');
 }
 
 //---------------------------
@@ -27,7 +32,7 @@ router.post('/history', (req, res) => {
   const historyItems = _.map(req.body, (item) => {
     item.title = cleanUp(item.title);
     return item;
-  });
+  }).filter(item => item);
 
   const topUrls = _.map(historyItems, 'url').slice(0, 5);
   const toParse = [];
@@ -42,7 +47,7 @@ router.post('/history', (req, res) => {
       const queries = [];
       pageInfos.forEach((pageInfo) => {
         pageInfo.keywords.forEach((item) => {
-          queries.push(db.all('SELECT * FROM tags WHERE (name LIKE ?)', cleanUp(item.text)));
+          queries.push(db.all('SELECT * FROM tags WHERE (name LIKE ?)', `%${cleanUp(item.text)}%`));
         });
       });
       return Promise.all(queries);
@@ -96,11 +101,23 @@ router.get('/watson', (req, res) => {
     .then(info => res.successJson(info));
 });
 
-router.get('/findTags', (req, res) => {
-  console.time('findTags');
+router.post('/findText', (req, res) => {
+  if(!req.body) return res.failMsg('Missing body');
+
+  // Asssume input is sorted by "rank" field, which is calculated by the client
+  const historyItems = _.map(req.body, (item) => {
+    item.title = cleanUp(item.title);
+    return item;
+  }).filter(item => item);
+
+  console.time('findText');
   // const urls = [];
 
-  watson.processUrl('https://en.wikipedia.org/wiki/Fidget_spinner')
+  const titleText = _.reduce(historyItems, (total, item) => `${total}, ${item.title}`, '')
+    .replace(/ +/g, ' ');
+
+  console.log('Title Text:', titleText);
+  watson.processText(titleText)
     .then((info) => {
       console.log('Got: ', info);
       const queries = [];
@@ -140,7 +157,7 @@ router.get('/findTags', (req, res) => {
           }
         });
       });
-      console.timeEnd('findTags');
+      console.timeEnd('findText');
       return res.successJson(_.orderBy(masterList, 'weight', 'desc'));
     });
 });
