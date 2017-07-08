@@ -47,7 +47,7 @@ router.post('/history', (req, res) => {
       const queries = [];
       pageInfos.forEach((pageInfo) => {
         pageInfo.keywords.forEach((item) => {
-          queries.push(db.all('SELECT * FROM tags WHERE (name LIKE ?)', `%${cleanUp(item.text)}%`));
+          queries.push(db.all("SELECT * FROM tags WHERE (name LIKE '%' || ? || '%')", `${cleanUp(item.text)}`));
         });
       });
       return Promise.all(queries);
@@ -72,7 +72,7 @@ router.post('/history', (req, res) => {
       masterList.forEach((m) => { m.weight = weight; });
 
       movieLists.slice(1).forEach((movieList) => {
-        weight /= 2;
+        weight /= 1.1;
         movieList.forEach((movie) => {
           if(_.includes(masterList, movie)) {
             const foundItem = _.find(masterList, movie);
@@ -122,7 +122,7 @@ router.post('/findText', (req, res) => {
       console.log('Got: ', info);
       const queries = [];
       info.keywords.forEach((item) => {
-        queries.push(db.all('SELECT * FROM tags WHERE (name LIKE ?)', cleanUp(item.text)));
+        queries.push(db.all("SELECT * FROM tags WHERE (name LIKE '%' || ? || '%')", cleanUp(item.text)));
       });
       return Promise.all(queries);
     })
@@ -146,7 +146,7 @@ router.post('/findText', (req, res) => {
       masterList.forEach((m) => { m.weight = weight; });
 
       movieLists.slice(1).forEach((movieList) => {
-        weight /= 2;
+        weight /= 1.1;
         movieList.forEach((movie) => {
           if(_.includes(masterList, movie)) {
             const foundItem = _.find(masterList, movie);
