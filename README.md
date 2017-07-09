@@ -4,7 +4,4 @@ Movie Pup utilizes IBM's Watson API to analyze your search history and recommend
 ---
 
 ![Logo](https://i.imgur.com/oe3kQQz.jpg)
-
----
-
 *Made with ❤ by the Cybermen*
