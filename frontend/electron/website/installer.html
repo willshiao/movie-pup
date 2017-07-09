@@ -111,9 +111,14 @@
               console.log(data.data);
               downloadPage.hide();
               thankPage.show();
-              if(data.data.length > 0) {
-                const posterUrl = `https://image.tmdb.org/t/p/w300/${data.data[0].poster_path}`;
-                $('#moviePoster').attr('src', posterUrl);
+              const movies = data.data;
+              while(movies.length > 0) {
+                if(movies[0].poster_path !== null) {
+                  const posterUrl = `https://image.tmdb.org/t/p/w300/${movies[0].poster_path}`;
+                  $('#moviePoster').attr('src', posterUrl);
+                } else {
+                  movies.shift();
+                }
               }
             },
             error: function(error) {
