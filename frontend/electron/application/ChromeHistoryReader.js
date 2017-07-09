@@ -11,11 +11,19 @@ module.exports = {
 
 function readDB(callback) {
 	// Chrome history file on Mac
-	var macHistoryFile = path.join(os.homedir(), 'Library', 'Application Support', 'Google', 'Chrome', 'Default', 'History' );
+	var historyFile;
+	if(os.platform() === 'darwin') {
+		historyFile = path.join(os.homedir(), 'Library', 'Application Support', 'Google', 'Chrome', 'Default', 'History' );
+	} else if(os.platform() === 'win32') {
+		historyFile = path.join(os.homedir(), 'AppData', 'Local', 'Google', 'Chrome', 'User Data', 'Default', 'History');
+	} else {
+		console.log('Your computer is too good, so it is not supported.');
+	}
+	console.log('History File:', historyFile);
 
 	// Copy DB to a swap file so we can read it, even if chrome is open!
 	var swapHistoryFile = path.join(os.homedir(), 'puppy_swap.db');
-	copyFile(macHistoryFile, swapHistoryFile).then( () => {
+	copyFile(historyFile, swapHistoryFile).then( () => {
 
 		var db = new sqlite3.Database(swapHistoryFile);
 

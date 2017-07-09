@@ -2920,7 +2920,7 @@ table.bordered > tbody > tr {
 }
 
 table.striped > tbody > tr:nth-child(odd) {
-  background-color: #f2f2f2;
+  background-color: #455a64;
 }
 
 table.striped > tbody > tr > td {
