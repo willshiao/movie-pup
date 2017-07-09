@@ -20,17 +20,10 @@ nav .brand-logo {
   color: #fff;
 }
 
-<<<<<<< HEAD
-/*.mvPoster{
-  max-height: 450px;
-  max-width: 300px;
-}*/
-=======
 .mvPoster {
   clip: rect(0px,300px,500px,0px);
   height: 500px;
 }
->>>>>>> 3f130152af574d93be2ce5bded5d4798f091983a
 
 p {
   line-height: 2rem;
