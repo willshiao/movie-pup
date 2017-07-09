@@ -133,13 +133,23 @@
                 }
 
                 var toAppend = '';
-                const LIMIT = 6;
+                const LIMIT = 7;
 
                 for (var i = 0; i < LIMIT; i++) {
+                    if (i == 0) {
+                        toAppend += '<div class="row">'
+                    } else if (i == LIMIT-1) {
+                        break;
+                    } else if (i % 3 == 0) {
+                        toAppend += '</div><div class="row">'
+                    }
 
                     if (i < movies.length) {
                         var movie = genCardHTML(movies[i], i);
                         toAppend += movie;
+                        if (i == LIMIT-1) {
+                            toAppend += '</div>'
+                        }
                     }
                 }
                 $("#movieCards").append(toAppend);
@@ -150,9 +160,9 @@
             }
 
             function updateImg(movie, index) {
-                if (!movie.poster_path || movie.poster_path == "null")
-                    return;
+                if (!movie.poster_path || movie.poster_path == "null") {
 
+                }
                 var imgUrl = `https://image.tmdb.org/t/p/w300/${ movie.poster_path }`;
 
                 $.ajax({
@@ -174,10 +184,13 @@
             }
 
             function genTableRow(tag) {
+                String.prototype.capitalize = function() {
+                    return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+                };
                 return `<tr>
-                    <td>${tag.text}</td>
-                    <td>${tag.relevance}</td>
-                    <td>${tag.weight}</td>
+                    <td>${ tag.text.capitalize() }</td>
+                    <td>${ tag.relevance }</td>
+                    <td>${ tag.weight }</td>
                 </tr>`;
             }
 
@@ -187,14 +200,14 @@
                 var template =
                 `
                     <!-- CARD BEGINS -->
-                    <div class="col s12 m6 l4">
+                    <div class="col s12 m4 l4">
                         <div class="card restrained">
                             <div class="card-image">
                                 <img id="img-${index}" src="images/noPoster.png" class="mvPoster">
                             </div>
                             <div class="card-content">
                                 <span class="card-title activator grey-text text-darken-4 outer-title">${ movie.title }<i class="material-icons right">more_vert</i></span>
-                                <p><a href="#" class="btn waves-effect waves-light blue" onclick="electron.shell.openExternal('${ movieLink }')">Watch now</a></p>
+                                <p><a href="#" class="btn blue" onclick="electron.shell.openExternal('${ movieLink }')">Watch now</a></p>
                             </div>
                             <div class="card-reveal">
                                 <span class="card-title grey-text text-darken-4">${ movie.title }<i class="material-icons right">close</i></span>
