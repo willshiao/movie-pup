@@ -115,6 +115,7 @@ router.post('/history', (req, res) => {
         masterList = _(masterList)
           .groupBy('weight');
         logger.debug('Number of groups: ', masterList.keys().length);
+        console.log('Keys:', masterList.keys());
         console.log('Groups:', masterList.value());
         if(masterList.keys().length === 1) {
           masterList = masterList
