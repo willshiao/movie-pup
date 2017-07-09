@@ -5,6 +5,11 @@ module.exports = {
     sortObjects
 };
 
+// Scoring algorithm
+function calculateScore(visits, timeAgo) {
+    return parseFloat(visits * 100) / (timeAgo + 1);
+}
+
 // Array to sort, amount of objects to return
 function sortObjects(objs) {
     function compare(a,b) {
@@ -36,16 +41,12 @@ function getScore(historyObj) {
     }
 
     var visits = historyObj.visit_count;
-    var visitsNormalized = visits > 40 ? 40 : visits;
+    var visitsNormalized = visits > 80 ? 80 : visits;
 
     var date = win32EpochToDate(historyObj.last_visit_time);
-    var weeksAgo = moment().diff(date, "weeks");
+    var weeksAgo = moment().diff(date, "minutes");
 
     return calculateScore(visitsNormalized, weeksAgo);
-}
-
-function calculateScore(visits, weeksAgo) {
-    return visits / parseFloat(Math.pow(2, weeksAgo));
 }
 
 function win32EpochToDate(fileTime) {
