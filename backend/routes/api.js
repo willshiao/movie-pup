@@ -115,6 +115,7 @@ router.post('/history', (req, res) => {
         masterList = _(masterList)
           .groupBy('weight');
         if(masterList.keys().length === 1) {
+          logger.debug('Number of groups: ', masterList.keys().length);
           masterList = masterList
             .values()
             .flatten()
@@ -123,7 +124,7 @@ router.post('/history', (req, res) => {
           masterList = masterList
             .mapValues((group) => {
               console.log('Group:', group);
-              if(group.length > 4) return group.slice(0, 3);
+              if(group.length > 4) return group.slice(0, 4);
               return group;
             })
             .values()
