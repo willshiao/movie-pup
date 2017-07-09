@@ -1,3 +1,3 @@
-# shape-2017
+# Movie Pup
 
-Some cool guys build an invasive advertising machine at AT&T Shape 2017.
+Movie Pup utilizes IBM's Watson API to analyze your search history and recommend relevant movies.
