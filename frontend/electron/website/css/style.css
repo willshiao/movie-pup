@@ -29,6 +29,10 @@ nav .brand-logo {
   font-size: 18px !important;
 }
 
+td, th {
+  text-align: center;
+}
+
 .card.restrained {
   max-width: 350px;
 }
