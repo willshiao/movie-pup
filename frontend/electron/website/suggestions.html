@@ -49,27 +49,12 @@
                     <table class="striped">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Item Name</th>
-                                <th>Item Price</th>
+                                <th>ID</th>
+                                <th>Tag Name</th>
+                                <th>Tag Weight</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>Alvin</td>
-                                <td>Eclair</td>
-                                <td>$0.87</td>
-                            </tr>
-                            <tr>
-                                <td>Alan</td>
-                                <td>Jellybean</td>
-                                <td>$3.76</td>
-                            </tr>
-                            <tr>
-                                <td>Jonathan</td>
-                                <td>Lollipop</td>
-                                <td>$7.00</td>
-                            </tr>
+                        <tbody id="keywords">
                         </tbody>
                     </table>
                 </div>
@@ -130,6 +115,10 @@
                     return;
                 }
 
+                data.keywords.forEach(keyword => {
+                    $('#keywords').append(genTableRow(keyword));
+                });
+
                 var movies = data.data;
                 var toAppend = '';
                 const LIMIT = 7;
@@ -161,6 +150,14 @@
                     return pieces.slice(0, 70).join(' ') + '...';
                 }
                 return desc;
+            }
+
+            function genTableRow(tag) {
+                return `<tr>
+                    <td>${tag.id}</td>
+                    <td>${tag.name}</td>
+                    <td>${tag.weight}</td>
+                </tr>`;
             }
 
 
