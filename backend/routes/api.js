@@ -115,20 +115,21 @@ router.post('/history', (req, res) => {
         masterList = _(masterList)
           .groupBy('weight');
         if(masterList.keys().length === 1) {
-          return masterList
+          masterList = masterList
+            .values()
+            .flatten()
+            .value();
+        } else {
+          masterList = masterList
+            .mapValues((group) => {
+              console.log('Group:', group);
+              if(group.length > 4) return group.slice(0, 3);
+              return group;
+            })
             .values()
             .flatten()
             .value();
         }
-        masterList
-          .mapValues((group) => {
-            console.log('Group:', group);
-            if(group.length > 4) return group.slice(0, 3);
-            return group;
-          })
-          .values()
-          .flatten()
-          .value();
       }
       console.timeEnd('history');
       return res.successJson(_.orderBy(masterList, 'weight', 'desc'));
