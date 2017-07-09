@@ -174,7 +174,7 @@ router.post('/historySearch', (req, res) => {
   topUrls.forEach((url) => {
     toParse.push(watson.processUrl(url).catch(err => logger.error(err)));
   });
-  let keyTags;
+  let keyTags = [];
 
   return Promise.all(toParse)
     .then((info) => {
@@ -184,6 +184,7 @@ router.post('/historySearch', (req, res) => {
         let weight = 1;
         infoItem.keywords.forEach((keyWord) => {
           keyWord.weight = weight;
+          keyTags.push(keyWord);
           weight /= 1.1;
         });
       });
