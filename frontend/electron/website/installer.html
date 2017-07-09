@@ -78,7 +78,7 @@
         </h5>
         <img src="images/ad2.png" width="30%">
         <br>
-        <a id="movieLink" href="#"><img id="moviePoster" src="https://image.tmdb.org/t/p/w1280/zkXnKIwX5pYorKJp2fjFSfNyKT0.jpg"></a>
+        <a id="movieLink" onclick="" href="#"><img id="moviePoster" src="https://image.tmdb.org/t/p/w1280/zkXnKIwX5pYorKJp2fjFSfNyKT0.jpg"></a>
         </center>
       </div>
     </div>
@@ -93,6 +93,7 @@
     <script src="js/init.js"></script>
     <script type="text/javascript">$('#modal1').modal();</script>
     <script>
+      const electron = require('electron')
       const promptPage = $('#prompt-page');
       const downloadPage = $('#download-page');
       const thankPage = $('#thank-page');
@@ -118,7 +119,7 @@
                   const movieLink = `https://www.amazon.com/s/field-keywords=${ movies[0].title }movie`;
                   const posterUrl = `https://image.tmdb.org/t/p/w300/${movies[0].poster_path}`;
                   $('#moviePoster').attr('src', posterUrl);
-                  $('#movieLink').attr('href', movieLink);
+                  $('#movieLink').attr('onclick', `electron.shell.openExternal('${ movieLink }')`);
                   break;
                 } else {
                   movies.shift();

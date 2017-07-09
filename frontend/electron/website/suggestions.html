@@ -61,7 +61,7 @@
             </div>
         </div>
         <br /><br />
-        
+
         <div class="container white z-depth-3" style="padding: 50px">
             <canvas id="keyword-chart" width="500" height="500"></canvas>
         </div>
@@ -174,8 +174,8 @@
                     data: {
                         datasets: [{
                             label: 'Relevance vs Weight',
-                            data: tags.map((t) => { return { x: t.weight, y: t.relevance }; })
-                            fill: false,
+                            data: tags.map((t) => { return { x: t.weight, y: t.relevance }; }),
+                            fill: false
                         }],
                     },
                     options: {
