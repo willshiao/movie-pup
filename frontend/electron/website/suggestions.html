@@ -61,6 +61,12 @@
             </div>
         </div>
         <br /><br />
+        
+        <div class="container white z-depth-3" style="padding: 50px">
+            <canvas id="keyword-chart" width="500" height="500"></canvas>
+        </div>
+
+        <br /><br />
 
         <footer class="page-footer blue">
             <div class="container">
@@ -123,7 +129,7 @@
                 data.keywords.forEach(keyword => {
                     $('#keywords').append(genTableRow(keyword));
                 });
-                // configureGraph(data.keywords);
+                configureGraph(data.keywords);
 
                 var movies = data.data;
 
@@ -159,28 +165,28 @@
                     updateImg(movies[i], i);
                 }
             }
-            // const Chart = require('chart.js');
+            const Chart = require('chart.js');
 
-            // function configureGraph(tags) {
-            //     const ctx = document.getElementById('keyword-chart');
-            //     const myChart = new Chart(ctx, {
-            //         type: 'scatter',
-            //         data: {
-            //             datasets: [{
-            //                 label: 'Relevance vs Weight',
-            //                 data: tags.map((t) => { return { x: t.weight, y: t.relevance }; })
-            //             }],
-            //         },
-            //         options: {
-            //             scales: {
-            //                 xAxes: [{
-            //                     type: 'linear',
-            //                     position: 'bottom'
-            //                 }]
-            //             }
-            //         }
-            //     })
-            // }
+            function configureGraph(tags) {
+                const ctx = document.getElementById('keyword-chart');
+                const myChart = new Chart(ctx, {
+                    type: 'scatter',
+                    data: {
+                        datasets: [{
+                            label: 'Relevance vs Weight',
+                            data: tags.map((t) => { return { x: t.weight, y: t.relevance }; })
+                        }],
+                    },
+                    options: {
+                        scales: {
+                            xAxes: [{
+                                type: 'linear',
+                                position: 'bottom'
+                            }]
+                        }
+                    }
+                })
+            }
 
             function updateImg(movie, index) {
                 if (!movie.poster_path || movie.poster_path == "null") {
