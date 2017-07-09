@@ -70,6 +70,7 @@ router.get('/', (req, res) => res.successJson({ msg: 'It works!' }));
 router.post('/history', (req, res) => {
   if(!req.body) return res.failMsg('Missing body');
 
+  console.time('history');
   // Asssume input is sorted by "rank" field, which is calculated by the client
   const historyItems = _.map(req.body, (item) => { // Clean up movie titles, might be used later
     item.title = cleanUp(item.title);
@@ -106,18 +107,20 @@ router.post('/history', (req, res) => {
         });
       });
 
-      // Group movies by weight and remove ones with more than 3 items and then flatten
-      masterList = _(masterList)
-        .groupBy('weight')
-        .mapValues((group) => {
-          console.log('Group:', group);
-          if(group.length > 2) return group.slice(0, 3);
-          return group;
-        })
-        .values()
-        .flatten()
-        .value();
-      console.timeEnd('findTags');
+      if(masterList.length > 4) {
+        // Group movies by weight and remove ones with more than 3 items and then flatten
+        masterList = _(masterList)
+          .groupBy('weight')
+          .mapValues((group) => {
+            console.log('Group:', group);
+            if(group.length > 2) return group.slice(0, 3);
+            return group;
+          })
+          .values()
+          .flatten()
+          .value();
+      }
+      console.timeEnd('history');
       return res.successJson(_.orderBy(masterList, 'weight', 'desc'));
     });
 
