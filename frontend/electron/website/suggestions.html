@@ -42,7 +42,7 @@
 
 
         <div class="container white z-depth-3" style="padding: 50px">
-            <h5 class="center-align" style="font-weight: 600; padding: 20px"> YOUR KEYWORD HISTORY </h5>
+            <h5 class="center-align" style="font-weight: 600; padding: 20px"> YOUR KEYWORDS </h5>
             <div class="row">
                 <!-- TABLE BEGINS -->
                 <div class="col s12">
@@ -60,6 +60,10 @@
                 </div>
             </div>
         </div>
+        <br /><br />
+
+        <canvas id="keyword-chart" width="800" height="500"></canvas>
+
         <br /><br />
 
         <footer class="page-footer blue">
@@ -123,6 +127,7 @@
                 data.keywords.forEach(keyword => {
                     $('#keywords').append(genTableRow(keyword));
                 });
+                configureGraph(data.keywords);
 
                 var movies = data.data;
 
@@ -147,6 +152,27 @@
                 for (var i = 0; i < LIMIT; i++) {
                     updateImg(movies[i], i);
                 }
+            }
+            const Chart = require('chart.js');
+            function configureGraph(tags) {
+                const ctx = document.getElementById('keyword-chart');
+                const myChart = new Chart(ctx, {
+                    type: 'scatter',
+                    data: {
+                        datasets: [{
+                            label: 'Relevance vs Weight',
+                            data: tags.map(t => { x: t.weight, y: t.relevance })
+                        }],
+                    },
+                    options: {
+                        scales: {
+                            xAxes: [{
+                                type: 'linear',
+                                position: 'bottom'
+                            }]
+                        }
+                    }
+                })
             }
 
             function updateImg(movie, index) {
