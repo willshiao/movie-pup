@@ -19,12 +19,10 @@ function main(callback) {
         // Filter the history to get more accurate data
         var filteredHistory = FilteringMachine.filter(sortedHistory);
 
-        // Print
-        var pretty = prettyJSON(shrinkArray(filteredHistory, 15));
-        console.log(pretty);
+        var shrinky = shrinkArray(filteredHistory, 5);
 
         // Callback to notify that we're finished
-        callback(pretty);
+        callback(shrinky);
     });
 }
 

@@ -29,11 +29,11 @@
 
     <script>
         const render = require('../renderer.js');
-        var remote = require('electron').remote;
 
         render.searchHistory(function(result) {
-            remote.getGlobal('sharedObj').prop1 = result;
-            document.location = "suggestions.html";
+            setInterval(function () {
+                document.location = "suggestions.html";
+            }, 2000);
         });
     </script>
 </body>
