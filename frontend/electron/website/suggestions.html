@@ -156,13 +156,11 @@
 
             function trimDescription(desc) {
                 const pieces = desc.split(' ');
-                let append = '';
 
                 if(pieces.length > 100) {
-                    pieces = pieces.slice(0, 100);
-                    append = '...';
+                    return pieces.slice(0, 100).join(' ') + '...';
                 }
-                return pieces.join(' ') + append;
+                return desc;
             }
 
 
