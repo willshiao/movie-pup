@@ -9,22 +9,27 @@
     <!-- CSS  -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
-       <link rel="stylesheet" href="css/materialize.css">
-
     <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
 </head>
 
 <body>
-    <nav class="blue" role="navigation">
-        <div class="nav-wrapper container">
-            <a id="logo-container" href="index.html" class="brand-logo"><img src="images/inlinewhite.png" width="16%" style="padding: 12px"></a>
-            <ul class="right hide-on-med-and-down">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="preloader.html">Suggestions</a></li>
-            </ul>
-            <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
-        </div>
-    </nav>
+    <div class="navbar-fixed blue">
+        <nav class="blue">
+            <div class="container blue">
+                <div class="nav-wrapper blue">
+                    <a href="index.html" class="logo">
+                        <img src="images/inlinewhite_small.png">
+                    </a>
+                    <a href="#" data-activates="mobile-demo" class="button-collapse button right"><span class="btn-open"></span></a>
+                    <ul class="right hide-on-med-and-down">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="preloader.html">Suggestions</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
     <div class="section no-pad-bot blue-grey darken-1">
         <div class="container">
             <h4 class="white-text" style="font-weight: 600"> YOUR SUGGESTIONS </h4>
@@ -139,14 +144,18 @@
 
         <!--  Scripts-->
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js">
-            
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
+        <script src="js/materialize.js"></script>
+        <script>
+            const $ = require('jquery');
+            $( document ).ready(function() {
+                $('.button-collapse').sideNav();
+                $('.parallax').parallax();
+            });
         </script>
-                <script src="js/materialize.js"></script>
-        <script src="js/init.js"></script>
 
         <script type="text/javascript">
-            const $ = require('jquery');
+
             const webview = document.getElementById('loaderFrame');
 
             webview.addEventListener('ipc-message', event => {
@@ -167,10 +176,27 @@
                 }
 
                 var movies = data.data;
-                for (var i = 0; i < 4; i++) {
-                    var movie = genCardHTML(movies[i]);
-                    $("#movieCards").append(movie);
+                var toAppend = '';
+                const LIMIT = 7;
+
+                for (var i = 0; i < LIMIT; i++) {
+                    if (i == 0) {
+                        toAppend += '<div class="row">'
+                    } else if (i == LIMIT-1) {
+                        break;
+                    } else if (i % 3 == 0) {
+                        toAppend += '</div><div class="row">'
+                    }
+
+                    if (i < movies.length) {
+                        var movie = genCardHTML(movies[i]);
+                        toAppend += movie;
+                        if (i == LIMIT-1) {
+                            toAppend += '</div>'
+                        }
+                    }
                 }
+                $("#movieCards").append(toAppend);
             }
 
 
@@ -178,18 +204,17 @@
                 var template =
                 `
                     <!-- CARD BEGINS -->
-                    <div class="col s3">
+                    <div class="col s12 m4 l4">
                         <div class="card">
-                            <div class="card-image waves-effect waves-block waves-light">
-                                <img class="activator" src="https://image.tmdb.org/t/p/w300/${ movie.poster_path }">
+                            <div class="card-image">
+                                <img src="https://image.tmdb.org/t/p/w300/${ movie.poster_path }">
+                                <span class="card-title">${ movie.title }</span>
                             </div>
                             <div class="card-content">
-                                <span class="card-title activator grey-text text-darken-4">${ movie.title }<i class="material-icons right">more_vert</i></span>
-                                <p><a href="https://netflix.com">Watch now</a></p>
-                            </div>
-                            <div class="card-reveal">
-                                <span class="card-title grey-text activator text-darken-4">Moonlight<i class="material-icons right">close</i></span>
                                 <p>${ movie.overview }</p>
+                            </div>
+                            <div class="card-action">
+                                <a href="https://netflix.com">Watch now</a>
                             </div>
                         </div>
                     </div>

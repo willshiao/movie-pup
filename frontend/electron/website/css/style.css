@@ -6,6 +6,15 @@
  * Made By MaterializeCSS.com
  */
 
+ .logo {
+     display: inline-block;
+     height: 100%;
+ }
+
+ .logo>img {
+     vertical-align: middle
+ }
+
 nav ul a,
 nav .brand-logo {
   color: #fff;
