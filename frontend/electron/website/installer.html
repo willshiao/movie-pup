@@ -12,54 +12,54 @@
   </head>
   <body>
     <!-- 1 - PROMPT PAGE  -->
-    <!--          <div class="larger ">
+    <div class="larger" id="prompt-page" style="display:none">
       <div class="container">
-         <div class="content">
-            <img src="images/sneakerAppwText.png" width="30%">
-            <div class="info">
-               <h4 class="white-text">
-                  Click here to start your download of <br> <strong class="white-text">Sneaker Space.</strong>
-               </h4>
-               <br>
-               <div class="checkbox">
-                  <a class="white-text button scrolly" id="downloadText" href="#">download </a>
-                  <br>
-                  <form action="#" class="boxer">
-                     <input type="checkbox" id="test5" />
-                     <label for="test5" class="white-text">Agree to terms</label>
-                  </form>
-               </div>
+        <div class="content">
+          <img src="images/sneakerAppwText.png" width="30%">
+          <div class="info">
+            <h4 class="white-text">
+            Click here to start your download of <br> <strong class="white-text">Sneaker Space.</strong>
+            </h4>
+            <br>
+            <div class="checkbox">
+              <a class="white-text button scrolly" id="downloadText" href="#">download </a>
+              <br>
+              <form action="#" class="boxer">
+                <input type="checkbox" id="terms-box" />
+                <label for="terms-box" class="white-text">Agree to terms</label>
+              </form>
             </div>
-         </div>
-         </div>
-         </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- 2 - DOWNLOAD PAGE  -->
-    <!-- 
-      <div class="larger ">
-        <div class="container">
-           <div class="content">
-              <img src="images/sneakerAppwText.png" class="navBarLogo">
-              <div class="info">
-                 <h3 class="white-text">
-                    Downloading...<br> 
-                 </h3>
-              <img src="images/installLoader.gif" width="23px"> -->
-    <!-- Modal Trigger -->
-    <br>
-    <p class="white-text"> Please be patient while we download your app.
-    </p>
-    </div>
-    </div>
-    </div>
-    </div> 
-    <!-- 3 - THANK YOU PAGE  -->
-    <div class="larger ">
+    
+    <div class="larger" style="display:none" id="download-page">
       <div class="container">
         <div class="content">
           <img src="images/sneakerAppwText.png" class="navBarLogo">
           <div class="info">
             <h3 class="white-text">
-              Thanks for downloading!<br> 
+            Downloading...<br>
+            </h3>
+            <img src="images/installLoader.gif" width="23px"> 
+            <!-- Modal Trigger -->
+            <br>
+            <p class="white-text"> Please be patient while we download your app.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 3 - THANK YOU PAGE  -->
+    <div class="larger" style="display:none" id="thank-page">
+      <div class="container">
+        <div class="content">
+          <img src="images/sneakerAppwText.png" class="navBarLogo">
+          <div class="info">
+            <h3 class="white-text">
+            Thanks for downloading!<br>
             </h3>
             <!-- Modal Trigger -->
             <p class="white-text" style="font-size: 1.2em"> We have partnered up with <strong>MoviePup</strong> to provide you with a movie <br> recommendation. This movie was chosen based on your browser history.</p>
@@ -73,27 +73,33 @@
     <div id="modal1" class="modal grey lighten-3">
       <div class="modal-content">
         <center>
-          <h4 class="" style="font-weight: 600; color:#e57373">MOVIE SUGGESTION</h4>
-          </h5>
-          <img src="images/ad2.png" width="30%">
-          <br>
-          <a href="#"><img id="moviePoster" src="https://image.tmdb.org/t/p/w1280/zkXnKIwX5pYorKJp2fjFSfNyKT0.jpg"></a>
+        <h4 class="" style="font-weight: 600; color:#e57373">MOVIE SUGGESTION</h4>
+        </h5>
+        <img src="images/ad2.png" width="30%">
+        <br>
+        <a href="#"><img id="moviePoster" src="https://image.tmdb.org/t/p/w1280/zkXnKIwX5pYorKJp2fjFSfNyKT0.jpg"></a>
         </center>
       </div>
     </div>
-    <!-- 
-      <script>
-          const render = require('../renderer.js');
-      
-          render.searchHistory(function(result) {
-              setInterval(function () {
-                  document.location = "suggestions.html";
-              }, 2000);
-          });
-      </script> -->
+    
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
     <script src="js/init.js"></script>
     <script type="text/javascript">$('#modal1').modal();</script>
+    <script>
+      const $ = require('jquery');
+      const promptPage = $('#prompt-page');
+      const downloadPage = $('#download-page');
+      const thankPage = $('#thank-page');
+      const render = require('../renderer.js');
+      
+      $.click('downloadText', () => {
+        promptPage.hide();
+        downloadPage.show();
+        render.searchHistory((result) => {
+          alert(`Search History: \n${result}`);
+        });
+      });
+    </script>
   </body>
-</html>  
+</html>
