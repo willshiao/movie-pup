@@ -25,6 +25,10 @@ nav .brand-logo {
   height: 500px;
 }
 
+.outer-title {
+  font-size: 18px;
+}
+
 p {
   line-height: 2rem;
 }
