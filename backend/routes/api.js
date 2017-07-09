@@ -22,53 +22,67 @@ function cleanUp(word) {
   return (newWord.length < 2) ? '' : newWord;
 }
 
+/**
+ * @param  { [[ {keywords: [ {text: String, relevance: Number} ]} ]] }   Nested array of keyword objects
+ * @return {[[{id: Number, name: String}]]}                              Nested array of tags
+ */
+function findTags(info) {
+  console.log('Got: ', info.map(a => a.keywords));
+
+  const pageInfos = _.flatten(info);
+  const queries = [];
+  pageInfos.forEach((pageInfo) => {
+    pageInfo.keywords = pageInfo.keywords.map(i => cleanUp(i.text)).filter(i => i);
+    pageInfo.keywords.forEach((keyword) => {
+      queries.push(db.all('SELECT * FROM tags WHERE (name LIKE ?)', keyword));
+    });
+  });
+  return Promise.all(queries);
+}
+
+/**
+ * Find movies based on matching tags
+ * @param  {[[{id: Number, name: String}]]}   Nested array of tags
+ * @return {Promise([[Movie]])}               Nested array of movies
+ */
+function findMovies(matching) {
+  let items = _(matching).flatten().uniqBy('id').value();
+  if(items.length > 20) items = items.slice(0, 20);
+
+  console.log('Found tags: ', items);
+  // const ids = _.map(items, 'id');
+  const requests = [];
+
+  items.forEach((item) => {
+    requests.push(tmdb.findMovieByKeyword(item.id));
+  });
+  return Promise.all(requests);
+}
+
 //---------------------------
 // Routes
 //---------------------------
+
 router.get('/', (req, res) => res.successJson({ msg: 'It works!' }));
 
 router.post('/history', (req, res) => {
   if(!req.body) return res.failMsg('Missing body');
 
   // Asssume input is sorted by "rank" field, which is calculated by the client
-  const historyItems = _.map(req.body, (item) => {
+  const historyItems = _.map(req.body, (item) => { // Clean up movie titles, might be used later
     item.title = cleanUp(item.title);
     return item;
-  }).filter(item => item);
+  }).filter(item => item); // Remove empty titles (after cleanup)
 
-  const topUrls = _.map(historyItems, 'url').slice(0, 5);
+  const topUrls = _.map(historyItems, 'url').slice(0, 5); // Get top 5 URLs
   const toParse = [];
   topUrls.forEach((url) => {
     toParse.push(watson.processUrl(url));
   });
 
   return Promise.all(toParse)
-    .then((info) => {
-      console.log('Got: ', info.map(a => a.keywords));
-
-      const pageInfos = _.flatten(info);
-      const queries = [];
-      pageInfos.forEach((pageInfo) => {
-        pageInfo.keywords = pageInfo.keywords.map(i => cleanUp(i.text)).filter(i => i);
-        pageInfo.keywords.forEach((keyword) => {
-          queries.push(db.all('SELECT * FROM tags WHERE (name LIKE ?)', keyword));
-        });
-      });
-      return Promise.all(queries);
-    })
-    .then((matching) => {
-      let items = _(matching).flatten().uniqBy('id').value();
-      if(items.length > 20) items = items.slice(0, 20);
-
-      console.log('Found tags: ', items);
-      // const ids = _.map(items, 'id');
-      const requests = [];
-
-      items.forEach((item) => {
-        requests.push(tmdb.findMovieByKeyword(item.id));
-      });
-      return Promise.all(requests);
-    })
+    .then(findTags)
+    .then(findMovies)
     .then((tMovieLists) => {
       console.log('Got multiple movies: ', tMovieLists);
       const movieLists = _.map(tMovieLists, 'results');
