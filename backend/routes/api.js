@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const _ = require('lodash');
 const watson = require('../lib/watson');
 const tmdb = require('../lib/tmdb');
+const logger = require('../lib/logger');
 
 router.use(bodyParser.json());
 
@@ -34,7 +35,8 @@ function findTags(info) {
   pageInfos.forEach((pageInfo) => {
     pageInfo.keywords = pageInfo.keywords.map(i => cleanUp(i.text)).filter(i => i);
     pageInfo.keywords.forEach((keyword) => {
-      queries.push(db.all('SELECT * FROM tags WHERE (name LIKE ?)', keyword));
+      queries.push(db.all('SELECT * FROM tags WHERE (name LIKE ?)', keyword)
+        .catch(err => logger.error(err)));
     });
   });
   return Promise.all(queries);
@@ -77,7 +79,7 @@ router.post('/history', (req, res) => {
   const topUrls = _.map(historyItems, 'url').slice(0, 5); // Get top 5 URLs
   const toParse = [];
   topUrls.forEach((url) => {
-    toParse.push(watson.processUrl(url));
+    toParse.push(watson.processUrl(url).catch(err => logger.error(err)));
   });
 
   return Promise.all(toParse)
