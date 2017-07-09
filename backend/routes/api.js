@@ -83,9 +83,14 @@ router.post('/history', (req, res) => {
   topUrls.forEach((url) => {
     toParse.push(watson.processUrl(url).catch(err => logger.error(err)));
   });
+  let keyTags;
 
   return Promise.all(toParse)
     .then(findTags)
+    .then((data) => {
+      keyTags = data;
+      return Promise.resolve(data);
+    })
     .then(findMovies)
     .then((tMovieLists) => {
       console.log('Got multiple movies: ', tMovieLists);
@@ -132,7 +137,11 @@ router.post('/history', (req, res) => {
         }
       }
       console.timeEnd('history');
-      return res.successJson(_.orderBy(masterList, 'weight', 'desc'));
+      return res.json({
+        status: 'success',
+        data: _.orderBy(masterList, 'weight', 'desc'),
+        keywords: keyTags,
+      });
     })
     .catch(err => res.errorJson(err));
 
