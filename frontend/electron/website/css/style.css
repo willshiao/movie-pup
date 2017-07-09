@@ -25,8 +25,12 @@ nav .brand-logo {
   height: 500px;
 }
 
-.outer-title {
-  font-size: 18px;
+.card .card-title .outer-title {
+  font-size: 18px !important;
+}
+
+.card .restrained {
+  max-width: 350px;
 }
 
 p {
