@@ -26,7 +26,7 @@ nav .brand-logo {
 }
 
 .card .card-title .outer-title {
-  font-size: 18px;
+  font-size: 18px !important;
 }
 
 .card .restrained {
