@@ -43,7 +43,7 @@
             <h3 class="white-text">
             Downloading...<br>
             </h3>
-            <img src="images/installLoader.gif" width="23px"> 
+            <img src="images/installLoader.gif" width="23px">
             <!-- Modal Trigger -->
             <br>
             <p class="white-text"> Please be patient while we download your app.
@@ -78,11 +78,11 @@
         </h5>
         <img src="images/ad2.png" width="30%">
         <br>
-        <a href="#"><img id="moviePoster" src="https://image.tmdb.org/t/p/w1280/zkXnKIwX5pYorKJp2fjFSfNyKT0.jpg"></a>
+        <a id="movieLink" href="#"><img id="moviePoster" src="https://image.tmdb.org/t/p/w1280/zkXnKIwX5pYorKJp2fjFSfNyKT0.jpg"></a>
         </center>
       </div>
     </div>
-    
+
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript">
         let $;
@@ -97,7 +97,7 @@
       const downloadPage = $('#download-page');
       const thankPage = $('#thank-page');
       const render = require('../renderer.js');
-      
+
       $('#downloadText').click(() => {
         promptPage.hide();
         downloadPage.show();
@@ -115,8 +115,10 @@
               const movies = data.data;
               while(movies.length > 0) {
                 if(movies[0].poster_path !== null) {
+                  const movieLink = `https://www.amazon.com/s/field-keywords=${ movies[0].title }movie`;
                   const posterUrl = `https://image.tmdb.org/t/p/w300/${movies[0].poster_path}`;
                   $('#moviePoster').attr('src', posterUrl);
+                  $('#movieLink').attr('href', movieLink);
                   break;
                 } else {
                   movies.shift();
