@@ -84,10 +84,13 @@
 
         <!--  Scripts-->
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript">
+            let $;
+            window.jQuery = window.$ = $ = require('jquery');
+            window.Hammer = require('./js/hammer.min.js');
+        </script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
-        <script src="js/materialize.js"></script>
         <script>
-            const $ = require('jquery');
             $( document ).ready(function() {
                 $('.button-collapse').sideNav();
                 $('.parallax').parallax();
@@ -195,13 +198,14 @@
                         <div class="card">
                             <div class="card-image">
                                 <img id="img-${index}" src="images/noPoster.png" class="mvPoster">
-                                <span class="card-title">${ movie.title }</span>
                             </div>
                             <div class="card-content">
-                                <p>${ trimDescription(movie.overview) }</p>
+                                <span class="card-title activator grey-text text-darken-4">${ movie.title }<i class="material-icons right">more_vert</i></span>
+                                <p><a onclick="electron.shell.openExternal('${ movieLink }')">Watch now</a></p>
                             </div>
-                            <div class="card-action">
-                                <a onclick="electron.shell.openExternal('${ movieLink }')">Watch now</a>
+                            <div class="card-reveal">
+                                <span class="card-title grey-text text-darken-4">${ movie.title }<i class="material-icons right">close</i></span>
+                                <p>${ trimDescription(movie.overview) }</p>
                             </div>
                         </div>
                     </div>
