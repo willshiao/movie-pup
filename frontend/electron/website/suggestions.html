@@ -24,7 +24,6 @@
                     <ul class="right hide-on-med-and-down">
                         <li><a href="index.html">Home</a></li>
                         <li><a href="suggestions.html">Suggestions</a></li>
-                        <li><a href="installer.html">Sample Installer</a></li>
                     </ul>
                 </div>
             </div>
@@ -50,9 +49,9 @@
                     <table class="striped">
                         <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>Tag Name</th>
-                                <th>Relevance</th>
-                                <th>Weight</th>
+                                <th>Tag Weight</th>
                             </tr>
                         </thead>
                         <tbody id="keywords">
@@ -85,14 +84,10 @@
 
         <!--  Scripts-->
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script type="text/javascript">
-            let $;
-            window.$ = window.jQuery = $ = require('jquery');
-            window.Hammer = require('./js/hammer.min.js');
-        </script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
         <script src="js/materialize.js"></script>
         <script>
+            const $ = require('jquery');
             $( document ).ready(function() {
                 $('.button-collapse').sideNav();
                 $('.parallax').parallax();
@@ -139,7 +134,7 @@
                     }
 
                     if (i < movies.length) {
-                        var movie = genCardHTML(movies[i]);
+                        var movie = genCardHTML(movies[i], i);
                         toAppend += movie;
                         if (i == LIMIT-1) {
                             toAppend += '</div>'
@@ -147,6 +142,22 @@
                     }
                 }
                 $("#movieCards").append(toAppend);
+
+                for (var i = 0; i < LIMIT; i++) {
+                    updateImg(movies[i], i);
+                }
+            }
+
+            function updateImg(movie, index) {
+                var imgUrl = `https://image.tmdb.org/t/p/w300/${ movie.poster_path }`;
+
+                $.ajax({
+                    url: imgUrl,
+                    type: "GET",
+                    success: function(data) {
+                        $(`#img-${ index }`).attr('src', imgUrl)
+                    }
+                });
             }
 
             function trimDescription(desc) {
@@ -160,14 +171,14 @@
 
             function genTableRow(tag) {
                 return `<tr>
-                    <td>${tag.text}</td>
-                    <td>${tag.relevance}</td>
+                    <td>${tag.id}</td>
+                    <td>${tag.name}</td>
                     <td>${tag.weight}</td>
                 </tr>`;
             }
 
 
-            function genCardHTML(movie) {
+            function genCardHTML(movie, index) {
                 var movieLink = "https://www.amazon.com/s/field-keywords=" + movie.title + " movie";
                 var template =
                 `
@@ -175,7 +186,7 @@
                     <div class="col s12 m4 l4">
                         <div class="card">
                             <div class="card-image">
-                                <img src="https://image.tmdb.org/t/p/w300/${ movie.poster_path }" class="mvPoster">
+                                <img id="img-${index}" src="images/noPoster.png" class="mvPoster">
                                 <span class="card-title">${ movie.title }</span>
                             </div>
                             <div class="card-content">

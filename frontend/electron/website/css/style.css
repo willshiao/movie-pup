@@ -20,12 +20,10 @@ nav .brand-logo {
   color: #fff;
 }
 
-.mvPoster{
-  min-height: 450px;
+/*.mvPoster{
   max-height: 450px;
-  min-width: 300px;
   max-width: 300px;
-}
+}*/
 
 p {
   line-height: 2rem;
