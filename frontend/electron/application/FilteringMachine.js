@@ -78,7 +78,6 @@ function filterBlacklistedDomains(data) {
         "wellsfargo.com",
         "westernunion.com",
         "ebay.com",
-        "amazon.com",
         "craigslist.com",
         "discord.gg",
         "discordapp.com",
@@ -98,7 +97,7 @@ function filterBlacklistedDomains(data) {
     ];
 
     var partiallyBlacklisted = [
-
+        
     ];
 
     for (var i = 0; i < data.length; i++) {
