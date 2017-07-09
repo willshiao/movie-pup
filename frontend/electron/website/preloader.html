@@ -29,11 +29,31 @@
 
     <script>
         const render = require('../renderer.js');
-        var remote = require('electron').remote;
+        const $ = require('jquery');
+        const { ipcRenderer } = require('electron')
 
         render.searchHistory(function(result) {
-            remote.getGlobal('sharedObj').prop1 = result;
-            document.location = "suggestions.html";
+            var apiEndpoint = "http://35.163.36.100/history";
+
+            // Query API
+            $.ajax({
+                type: "POST",
+                url: apiEndpoint,
+                data: JSON.stringify(result),
+                dataType: "json",
+                contentType: "application/json",
+                success: function(data, status) {
+                    global.pingHost = () => {
+                      ipcRenderer.sendToHost(data);
+                      ipcRenderer.sendToHost('closeLoader');
+                    }
+                    pingHost();
+                },
+                error: function(error) {
+                    console.log("Server API error: " + error);
+                    parent.closeIFrame();
+                }
+            });
         });
     </script>
 </body>

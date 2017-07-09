@@ -4,20 +4,21 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>Movie Pup</title>
     <!-- CSS  -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
     <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
 </head>
 
 <body>
     <nav class="blue" role="navigation">
         <div class="nav-wrapper container">
-            <a id="logo-container" href="#" class="brand-logo"><img src="images/inlinewhite.png" width="16%" style="padding: 12px"></a>
+            <a id="logo-container" href="index.html" class="brand-logo"><img src="images/inlinewhite.png" width="16%" style="padding: 12px"></a>
             <ul class="right hide-on-med-and-down">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Suggestions</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="preloader.html">Suggestions</a></li>
             </ul>
             <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
         </div>
@@ -129,35 +130,27 @@
                 </div>
             </div>
         </footer>
+
+        <!-- Preloader -->
+        <webview src="preloader.html" id="loaderFrame" style="position:absolute; top:0px; left:0px; width:100%; height:100%;
+            z-index:999" nodeintegration></webview>
+
         <!--  Scripts-->
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script src="js/materialize.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
         <script src="js/init.js"></script>
+
         <script type="text/javascript">
-            // Imports
-            const remote = require('electron').remote;
             const $ = require('jquery');
+            const webview = document.getElementById('loaderFrame');
 
-            // Set API vars
-            var historyJSON = remote.getGlobal('sharedObj').prop1;
-            var apiEndpoint = "http://35.163.36.100/history";
-
-            console.log(JSON.stringify(historyJSON, null, '\t'));
-
-            // Query API
-            $.ajax({
-                type: "POST",
-                url: apiEndpoint,
-                data: JSON.stringify(historyJSON),
-                dataType: "json",
-                contentType: "application/json",
-                success: function(data, status) {
-                    console.log("Hello");
-                    processData(data);
-                },
-                error: function(error) {
-                    console.log("Server API error: " + error);
+            webview.addEventListener('ipc-message', event => {
+                if (event.channel == "closeLoader") {
+                    $("#loaderFrame").remove();
+                } else {
+                    processData(event.channel);
                 }
+                console.log(event.channel)
             });
 
             function processData(data) {
@@ -177,7 +170,8 @@
 
 
             function genCardHTML(movie) {
-                var template = `
+                var template =
+                    `
                     <!-- CARD BEGINS -->
                     <div class="col s3">
                         <div class="card">
@@ -198,8 +192,6 @@
                 `
                 return template;
             }
-
-
         </script>
 </body>
 
