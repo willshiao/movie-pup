@@ -33,7 +33,7 @@ function findTags(info) {
   const pageInfos = _.flatten(info);
   const queries = [];
   pageInfos.forEach((pageInfo) => {
-    if(!pageInfo.keywords) return;
+    if(!pageInfo || !pageInfo.keywords) return;
     pageInfo.keywords = pageInfo.keywords.map(i => cleanUp(i.text)).filter(i => i);
     pageInfo.keywords.forEach((keyword) => {
       queries.push(db.all('SELECT * FROM tags WHERE (name LIKE ?)', keyword)
