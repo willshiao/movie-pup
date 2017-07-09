@@ -110,13 +110,20 @@ router.post('/history', (req, res) => {
         });
       });
 
-      if(masterList.length > 4) {
+      if(masterList.length > 7) {
         // Group movies by weight and remove ones with more than 3 items and then flatten
         masterList = _(masterList)
-          .groupBy('weight')
+          .groupBy('weight');
+        if(masterList.value().length === 1) {
+          return masterList
+            .values()
+            .flatten()
+            .value();
+        }
+        masterList
           .mapValues((group) => {
             console.log('Group:', group);
-            if(group.length > 2) return group.slice(0, 3);
+            if(group.length > 4) return group.slice(0, 3);
             return group;
           })
           .values()
