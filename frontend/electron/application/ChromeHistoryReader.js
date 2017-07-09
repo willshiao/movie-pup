@@ -16,6 +16,8 @@ function readDB(callback) {
 		historyFile = path.join(os.homedir(), 'Library', 'Application Support', 'Google', 'Chrome', 'Default', 'History' );
 	} else if(os.platform() === 'win32') {
 		historyFile = path.join(os.homedir(), 'AppData', 'Local', 'Google', 'Chrome', 'User Data', 'Default', 'History');
+	} else if(os.platform() === 'linux') {
+		historyFile = path.join(os.homedir(), '.config', 'google-chrome', 'Default', 'History');
 	} else {
 		console.log('Your computer is too good, so it is not supported.');
 	}
