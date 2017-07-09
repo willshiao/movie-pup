@@ -30,30 +30,42 @@
     <script>
         const render = require('../renderer.js');
         const $ = require('jquery');
-        const { ipcRenderer } = require('electron')
+        const { ipcRenderer } = require('electron');
 
-        render.searchHistory(function(result) {
-            var apiEndpoint = "http://35.163.36.100/historySearch";
+        // Seconds to wait before redirecting to timeout page
+        const TIMEOUT = 7;
 
-            // Query API
-            $.ajax({
-                type: "POST",
-                url: apiEndpoint,
-                data: JSON.stringify(result),
-                dataType: "json",
-                contentType: "application/json",
-                success: function(data, status) {
-                    global.pingHost = () => {
-                      ipcRenderer.sendToHost(data);
-                      ipcRenderer.sendToHost('closeLoader');
+        function initiate() {
+            render.searchHistory(function(result) {
+                var apiEndpoint = "http://35.163.36.100/historySearch";
+
+                // Query API
+                $.ajax({
+                    type: "POST",
+                    url: apiEndpoint,
+                    data: JSON.stringify(result),
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function(data, status) {
+                        global.pingHost = () => {
+                          ipcRenderer.sendToHost(data);
+                          ipcRenderer.sendToHost('closeLoader');
+                        }
+                        pingHost();
+                    },
+                    error: function(error) {
+                        console.log("Server API error: " + error);
                     }
-                    pingHost();
-                },
-                error: function(error) {
-                    console.log("Server API error: " + error);
-                }
+                });
             });
-        });
+
+            setTimeout(function () {
+                console.warn("Redirecting to index.html, we're taking too long to load!");
+                document.location = "index.html";
+                return;
+            }, TIMEOUT * 1000);
+        }
+        initiate();
     </script>
 </body>
 
