@@ -164,6 +164,7 @@
                 }
             }
             const Chart = require('chart.js');
+
             function configureGraph(tags) {
                 const ctx = document.getElementById('keyword-chart');
                 const myChart = new Chart(ctx, {
@@ -171,7 +172,7 @@
                     data: {
                         datasets: [{
                             label: 'Relevance vs Weight',
-                            data: tags.map(t => { x: t.weight, y: t.relevance })
+                            data: tags.map((t) => { return { x: t.weight, y: t.relevance }; })
                         }],
                     },
                     options: {
