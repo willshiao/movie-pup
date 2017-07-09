@@ -49,9 +49,9 @@
                     <table class="striped">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Tag Name</th>
-                                <th>Tag Weight</th>
+                                <th>Relevance</th>
+                                <th>Weight</th>
                             </tr>
                         </thead>
                         <tbody id="keywords">
@@ -182,8 +182,8 @@
 
             function genTableRow(tag) {
                 return `<tr>
-                    <td>${tag.id}</td>
-                    <td>${tag.name}</td>
+                    <td>${tag.text}</td>
+                    <td>${tag.relevance}</td>
                     <td>${tag.weight}</td>
                 </tr>`;
             }
