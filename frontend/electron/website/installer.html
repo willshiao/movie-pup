@@ -64,7 +64,7 @@
             <!-- Modal Trigger -->
             <p class="white-text" style="font-size: 1.2em"> We have partnered up with <strong>MoviePup</strong> to provide you with a movie <br> recommendation. This movie was chosen based on your browser history.</p>
             <br>
-            <a class="waves-effect waves-light btn red lighten-1" href="#modal1" ><strong>View Movie Reccomendation</strong></a>
+            <a class="waves-effect waves-light btn red lighten-1" href="#modal1" ><strong>View Movie Recomendation</strong></a>
           </div>
         </div>
       </div>
@@ -108,11 +108,18 @@
             dataType: "json",
             contentType: "application/json",
             success: function(data, status) {
+              console.log(data.data);
               downloadPage.hide();
               thankPage.show();
-              if(data.data.length > 0) {
-                const posterUrl = `https://image.tmdb.org/t/p/w300/${data.data[0].poster_path}`;
-                $('#moviePoster').attr('src', posterUrl);
+              const movies = data.data;
+              while(movies.length > 0) {
+                if(movies[0].poster_path !== null) {
+                  const posterUrl = `https://image.tmdb.org/t/p/w300/${movies[0].poster_path}`;
+                  $('#moviePoster').attr('src', posterUrl);
+                  break;
+                } else {
+                  movies.shift();
+                }
               }
             },
             error: function(error) {
