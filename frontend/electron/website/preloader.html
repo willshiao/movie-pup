@@ -1,69 +1,41 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Movie Pup</title>
+
     <!-- CSS  -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-    <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-    <style>
-    .dotted {
-  padding: 2.25em 1.6875em;
-  background-image: -webkit-repeating-radial-gradient(center center, rgba(0,0,0,.2), rgba(0,0,0,.2) 1px, transparent 1px, transparent 100%);
-  background-image: -moz-repeating-radial-gradient(center center, rgba(0,0,0,.2), rgba(0,0,0,.2) 1px, transparent 1px, transparent 100%);
-  background-image: -ms-repeating-radial-gradient(center center, rgba(0,0,0,.2), rgba(0,0,0,.2) 1px, transparent 1px, transparent 100%);
-  background-image: repeating-radial-gradient(center center, rgba(0,0,0,.2), rgba(0,0,0,.2) 1px, transparent 1px, transparent 100%);
-  -webkit-background-size: 3px 3px;
-  -moz-background-size: 3px 3px;
-  background-size: 3px 3px;
-  }
+    <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="css/preloader.css" type="text/css" rel="stylesheet" media="screen,projection" />
+</head>
 
-/*  body {
-    background-image: url("images/background.jpg");
-    background-repeat: repeat;
-}*/
-
-  .larger{
-    height: 100%;
-    width: 100%;
-    left: 0;
-    top: 0;
-    overflow: hidden;
-    position: fixed;
-    background-color: #fafafa;
-    background-image: url("images/background.jpg");
-    background-repeat: repeat;
-  }
-
-  .redtext{
-    color:"#ef5350";
-  }
-
-  .content{
-    padding:150px;
-  }
-    </style>
-  
-  
-  
-  </head>
-  <body>
+<body>
 
     <div class="larger ">
-    <div class ="container">
-    <div class = "content">
-    <center>
-    <img src="images/loading.png" width="30%">
-
-    <h1 style="font-weight: 600" class="redtext"> LOADING YOUR MOVIES...</h1> 
-    <img src="images/loading.gif">
-    </center>
-
+        <div class="container">
+            <div class="content">
+                <center>
+                    <img src="images/loading.png" width="30%">
+                    <h1 style="font-weight: 600" class="redtext"> LOADING YOUR MOVIES...</h1>
+                    <img src="images/loading.gif">
+                </center>
+            </div>
+        </div>
     </div>
-  </div>
 
-    </div>
-  </body>
-  </html>
+    <script>
+        const render = require('../renderer.js');
+
+        render.searchHistory(function(result) {
+            setInterval(function () {
+                document.location = "suggestions.html";
+            }, 3500);
+        });
+    </script>
+</body>
+
+</html>

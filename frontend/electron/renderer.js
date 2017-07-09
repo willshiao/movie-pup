@@ -1,3 +1,11 @@
-// This file is required by the index.html file and will
-// be executed in the renderer process for that window.
-// All of the Node.js APIs are available in this process.
+const Main = require('./application/Main.js');
+
+module.exports = {
+    searchHistory
+};
+
+function searchHistory(callback) {
+    Main.main(function(result) {
+        callback(result);
+    });
+}

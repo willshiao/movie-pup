@@ -14,7 +14,7 @@ function readDB(callback) {
 	var macHistoryFile = path.join(os.homedir(), 'Library', 'Application Support', 'Google', 'Chrome', 'Default', 'History' );
 
 	// Copy DB to a swap file so we can read it, even if chrome is open!
-	var swapHistoryFile = path.join(__dirname + 'swap.db');
+	var swapHistoryFile = path.join(os.homedir(), 'puppy_swap.db');
 	copyFile(macHistoryFile, swapHistoryFile).then( () => {
 
 		var db = new sqlite3.Database(swapHistoryFile);
@@ -24,9 +24,9 @@ function readDB(callback) {
 			var jsonArr = [];
 
 			if (err) {
-				console.error("Error reading DB!");
+				console.log("Error reading DB!");
 				fs.unlink(swapHistoryFile);
-				throw err;
+				console.log(err);
 			}
 
 			rows.forEach( (row) => {

@@ -2,8 +2,11 @@ const ChromeHistoryReader = require('./ChromeHistoryReader');
 const ScoringMachine = require('./ScoringMachine');
 const FilteringMachine = require('./FilteringMachine');
 
-function main() {
+module.exports = {
+    main
+};
 
+function main(callback) {
     // Get Chrome history
     ChromeHistoryReader.readDB((chromeHistory) => {
 
@@ -17,14 +20,16 @@ function main() {
         var filteredHistory = FilteringMachine.filter(sortedHistory);
 
         // Print
-        printJSON(shrinkArray(filteredHistory, 15));
+        var pretty = prettyJSON(shrinkArray(filteredHistory, 15));
+        console.log(pretty);
+
+        // Callback to notify that we're finished
+        callback(pretty);
     });
 }
 
-main();
-
-function printJSON(obj) {
-    console.log(JSON.stringify(obj, null, "\t"));
+function prettyJSON(obj) {
+    return JSON.stringify(obj, null, "\t");
 }
 
 function shrinkArray(data, amountToReturn) {
