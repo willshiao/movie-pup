@@ -32,7 +32,7 @@
 
     <div class="section no-pad-bot blue-grey darken-1">
         <div class="container">
-            <h4 class="white-text" style="font-weight: 600"> YOUR SUGGESTIONS </h4>
+            <h4 class="white-text" id="suggestionsMsg" style="font-weight: 600"> YOUR SUGGESTIONS </h4>
             <div class="row">
                 <div id="movieCards">
 
@@ -111,8 +111,9 @@
             function processData(data) {
                 // Check for bad data
                 if (data.status != "success") {
-                    console.log(data);
+                    $("#suggestionsMsg").text("No suggestions found :(");
                     console.error("Something is wrong with the data!");
+                    console.log(data);
                     return;
                 }
 
@@ -121,6 +122,13 @@
                 });
 
                 var movies = data.data;
+
+                // Check to see if there's any movies in the array
+                if (!movies || movies.length == 0) {
+                    $("#suggestionsMsg").text("No suggestions found :(");
+                    return;
+                }
+
                 var toAppend = '';
                 const LIMIT = 7;
 
