@@ -160,6 +160,9 @@
             }
 
             function updateImg(movie, index) {
+                if (!movie.poster_path || movie.poster_path == "null")
+                    return;
+
                 var imgUrl = `https://image.tmdb.org/t/p/w300/${ movie.poster_path }`;
 
                 $.ajax({
