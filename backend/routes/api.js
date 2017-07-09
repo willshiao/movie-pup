@@ -124,7 +124,8 @@ router.post('/history', (req, res) => {
       }
       console.timeEnd('history');
       return res.successJson(_.orderBy(masterList, 'weight', 'desc'));
-    });
+    })
+    .catch(err => res.errorJson(err));
 
   // const topItems = items.slice(config.get('ranking.topHistory'));
 
