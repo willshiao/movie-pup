@@ -28,7 +28,7 @@ function cleanUp(word) {
  * @return {[[{id: Number, name: String}]]}                              Nested array of tags
  */
 function findTags(info) {
-  console.log('Got: ', info.map(a => a.keywords));
+  if(info && info.keywords) console.log('Got: ', info.map(a => a.keywords));
 
   const pageInfos = _.flatten(info);
   const queries = [];
