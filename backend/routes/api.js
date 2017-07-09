@@ -90,6 +90,8 @@ router.post('/history', (req, res) => {
       console.log('Got multiple movies: ', tMovieLists);
       const movieLists = _.map(tMovieLists, 'results');
       let weight = 1;
+
+      if(movieLists.length === 0) return res.failMsg('No matching movies found.');
       let masterList = movieLists[0];
       masterList.forEach((m) => { m.weight = weight; });
 
