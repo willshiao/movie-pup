@@ -101,7 +101,25 @@
         promptPage.hide();
         downloadPage.show();
         render.searchHistory((result) => {
-          alert(`Search History: \n${result}`);
+          $.ajax({
+            type: "POST",
+            url: 'http://35.163.36.100/historySearch',
+            data: JSON.stringify(result),
+            dataType: "json",
+            contentType: "application/json",
+            success: function(data, status) {
+              downloadPage.hide();
+              thankPage.show();
+              if(data.data.length > 0) {
+                const posterUrl = `https://image.tmdb.org/t/p/w300/${data.data[0].poster_path}`;
+                $('#moviePoster').attr('src', posterUrl);
+              }
+            },
+            error: function(error) {
+              console.log("Server API error: " + error);
+            }
+          });
+          console.log(result);
         });
       });
     </script>
