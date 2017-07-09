@@ -15,7 +15,7 @@ const parameters = {
     entities: {
       // emotion: true,
       // sentiment: true,
-      limit: 10,
+      limit: 5,
     },
     keywords: {
       // emotion: true,
