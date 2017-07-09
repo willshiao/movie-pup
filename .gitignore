@@ -59,3 +59,6 @@ typings/
 
 *.sublime-project
 *.sublime-workspace
+
+*.db
+!other/movies.db
