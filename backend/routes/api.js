@@ -12,12 +12,14 @@ const tmdb = require('../lib/tmdb');
 router.use(bodyParser.json());
 
 function cleanUp(word) {
-  return word
+  // console.log('Word:', typeof word, word);
+  const newWord = word
     .toLowerCase()
     .replace(/free|stream|live|watch|online|tips|resign|button/g, '')
-    .replace(/\(.*\)/g, '')
-    .replace(/[^a-z ]/g, '')
+    // .replace(/\(.*\)/g, ' ')
+    .replace(/[^a-z ]/g, ' ')
     .replace(/ +/g, ' ');
+  return (newWord.length < 2) ? '' : newWord;
 }
 
 //---------------------------
@@ -42,18 +44,21 @@ router.post('/history', (req, res) => {
 
   return Promise.all(toParse)
     .then((info) => {
-      console.log('Got: ', info);
+      console.log('Got: ', info.map(a => a.keywords));
+
       const pageInfos = _.flatten(info);
       const queries = [];
       pageInfos.forEach((pageInfo) => {
-        pageInfo.keywords.forEach((item) => {
-          queries.push(db.all("SELECT * FROM tags WHERE (name LIKE '%' || ? || '%')", `${cleanUp(item.text)}`));
+        pageInfo.keywords = pageInfo.keywords.map(i => cleanUp(i.text)).filter(i => i);
+        pageInfo.keywords.forEach((keyword) => {
+          queries.push(db.all("SELECT * FROM tags WHERE (name LIKE '%' || ? || '%')", keyword));
         });
       });
       return Promise.all(queries);
     })
     .then((matching) => {
-      const items = _(matching).flatten().uniqBy('id').value();
+      let items = _(matching).flatten().uniqBy('id').value();
+      if(items.length > 20) items = items.slice(0, 20);
 
       console.log('Found tags: ', items);
       // const ids = _.map(items, 'id');
@@ -74,9 +79,10 @@ router.post('/history', (req, res) => {
       movieLists.slice(1).forEach((movieList) => {
         weight /= 1.1;
         movieList.forEach((movie) => {
-          if(_.includes(masterList, movie)) {
-            const foundItem = _.find(masterList, movie);
-            foundItem.weight += weight;
+          const index = _.findIndex(masterList, target => target.id === movie.id);
+          if(index >= 0) {
+            masterList[index].weight += weight;
+            console.log('Added weight: ', masterList[index].weight);
           } else {
             movie.weight = weight;
             masterList.push(movie);
@@ -119,7 +125,7 @@ router.post('/findText', (req, res) => {
   console.log('Title Text:', titleText);
   watson.processText(titleText)
     .then((info) => {
-      console.log('Got: ', info);
+      console.log('Got: ', info.map(a => a.keywords));
       const queries = [];
       info.keywords.forEach((item) => {
         queries.push(db.all("SELECT * FROM tags WHERE (name LIKE '%' || ? || '%')", cleanUp(item.text)));
@@ -148,9 +154,10 @@ router.post('/findText', (req, res) => {
       movieLists.slice(1).forEach((movieList) => {
         weight /= 1.1;
         movieList.forEach((movie) => {
-          if(_.includes(masterList, movie)) {
-            const foundItem = _.find(masterList, movie);
-            foundItem.weight += weight;
+          const index = _.findIndex(masterList, target => target.id === movie.id);
+          if(index >= 0) {
+            masterList[index].weight += weight;
+            console.log('Added weight: ', masterList[index].weight);
           } else {
             movie.weight = weight;
             masterList.push(movie);

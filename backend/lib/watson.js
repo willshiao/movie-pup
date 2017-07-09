@@ -20,7 +20,7 @@ const parameters = {
     keywords: {
       // emotion: true,
       // sentiment: true,
-      limit: 20,
+      limit: 5,
     },
   },
 };
