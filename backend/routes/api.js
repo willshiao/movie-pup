@@ -88,7 +88,7 @@ router.post('/history', (req, res) => {
   return Promise.all(toParse)
     .then(findTags)
     .then((data) => {
-      keyTags = data;
+      keyTags = _(data).flatten().uniqBy('id').value();
       return Promise.resolve(data);
     })
     .then(findMovies)
