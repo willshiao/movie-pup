@@ -89,6 +89,11 @@ router.post('/history', (req, res) => {
     .then(findTags)
     .then((data) => {
       keyTags = _(data).flatten().uniqBy('id').value();
+      let weight = 1;
+      keyTags.forEach((tag) => {
+        tag.weight = weight;
+        weight /= 1.1;
+      });
       return Promise.resolve(data);
     })
     .then(findMovies)
