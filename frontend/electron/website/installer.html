@@ -93,7 +93,7 @@
       const thankPage = $('#thank-page');
       const render = require('../renderer.js');
       
-      $.click('downloadText', () => {
+      $.click('#downloadText', () => {
         promptPage.hide();
         downloadPage.show();
         render.searchHistory((result) => {
