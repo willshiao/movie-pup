@@ -51,7 +51,7 @@ router.post('/history', (req, res) => {
       pageInfos.forEach((pageInfo) => {
         pageInfo.keywords = pageInfo.keywords.map(i => cleanUp(i.text)).filter(i => i);
         pageInfo.keywords.forEach((keyword) => {
-          queries.push(db.all("SELECT * FROM tags WHERE (name LIKE '%' || ? || '%')", keyword));
+          queries.push(db.all('SELECT * FROM tags WHERE (name LIKE ?)', keyword));
         });
       });
       return Promise.all(queries);
@@ -73,7 +73,7 @@ router.post('/history', (req, res) => {
       console.log('Got multiple movies: ', tMovieLists);
       const movieLists = _.map(tMovieLists, 'results');
       let weight = 1;
-      const masterList = movieLists[0];
+      let masterList = movieLists[0];
       masterList.forEach((m) => { m.weight = weight; });
 
       movieLists.slice(1).forEach((movieList) => {
@@ -89,6 +89,18 @@ router.post('/history', (req, res) => {
           }
         });
       });
+
+      // Group movies by weight and remove ones with more than 3 items and then flatten
+      masterList = _(masterList)
+        .groupBy('weight')
+        .mapValues((group) => {
+          console.log('Group:', group);
+          if(group.length > 2) return group.slice(0, 3);
+          return group;
+        })
+        .values()
+        .flatten()
+        .value();
       console.timeEnd('findTags');
       return res.successJson(_.orderBy(masterList, 'weight', 'desc'));
     });
@@ -128,7 +140,7 @@ router.post('/findText', (req, res) => {
       console.log('Got: ', info.map(a => a.keywords));
       const queries = [];
       info.keywords.forEach((item) => {
-        queries.push(db.all("SELECT * FROM tags WHERE (name LIKE '%' || ? || '%')", cleanUp(item.text)));
+        queries.push(db.all("SELECT * FROM tags WHERE (name LIKE ?)", cleanUp(item.text)));
       });
       return Promise.all(queries);
     })
