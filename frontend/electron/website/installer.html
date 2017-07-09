@@ -116,6 +116,7 @@
                 if(movies[0].poster_path !== null) {
                   const posterUrl = `https://image.tmdb.org/t/p/w300/${movies[0].poster_path}`;
                   $('#moviePoster').attr('src', posterUrl);
+                  break;
                 } else {
                   movies.shift();
                 }
