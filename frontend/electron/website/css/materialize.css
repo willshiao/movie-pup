@@ -6629,7 +6629,7 @@ form p:last-child {
   width: 18px;
   height: 18px;
   z-index: 0;
-  border: 2px solid #5a5a5a;
+  border: 2px solid #fff;
   border-radius: 1px;
   margin-top: 2px;
   -webkit-transition: .2s;
@@ -6664,8 +6664,8 @@ form p:last-child {
   height: 22px;
   border-top: 2px solid transparent;
   border-left: 2px solid transparent;
-  border-right: 2px solid #26a69a;
-  border-bottom: 2px solid #26a69a;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
   -webkit-transform: rotate(40deg);
           transform: rotate(40deg);
   -webkit-backface-visibility: hidden;
