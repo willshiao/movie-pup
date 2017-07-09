@@ -157,8 +157,8 @@
             function trimDescription(desc) {
                 const pieces = desc.split(' ');
 
-                if(pieces.length > 100) {
-                    return pieces.slice(0, 100).join(' ') + '...';
+                if(pieces.length > 70) {
+                    return pieces.slice(0, 70).join(' ') + '...';
                 }
                 return desc;
             }
