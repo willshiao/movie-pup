@@ -22,4 +22,10 @@ function findMovieByKeyword(keyword) {
   return rp.get(options);
 }
 
-module.exports = { findMovieByKeywords, findMovieByKeyword };
+function searchMovie(text) {
+  options.qs.query = text;
+  options.uri = 'https://api.themoviedb.org/3/search/movie';
+  return rp.get(options);
+}
+
+module.exports = { findMovieByKeywords, findMovieByKeyword, searchMovie };
