@@ -49,27 +49,12 @@
                     <table class="striped">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Item Name</th>
-                                <th>Item Price</th>
+                                <th>ID</th>
+                                <th>Tag Name</th>
+                                <th>Tag Weight</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>Alvin</td>
-                                <td>Eclair</td>
-                                <td>$0.87</td>
-                            </tr>
-                            <tr>
-                                <td>Alan</td>
-                                <td>Jellybean</td>
-                                <td>$3.76</td>
-                            </tr>
-                            <tr>
-                                <td>Jonathan</td>
-                                <td>Lollipop</td>
-                                <td>$7.00</td>
-                            </tr>
+                        <tbody id="keywords">
                         </tbody>
                     </table>
                 </div>
@@ -131,6 +116,10 @@
                     return;
                 }
 
+                data.keywords.forEach(keyword => {
+                    $('#keywords').append(genTableRow(keyword));
+                });
+
                 var movies = data.data;
                 var toAppend = '';
                 const LIMIT = 7;
@@ -164,6 +153,14 @@
                 return desc;
             }
 
+            function genTableRow(tag) {
+                return `<tr>
+                    <td>${tag.id}</td>
+                    <td>${tag.name}</td>
+                    <td>${tag.weight}</td>
+                </tr>`;
+            }
+
 
             function genCardHTML(movie) {
                 var movieLink = "https://www.amazon.com/s/field-keywords=" + movie.title + " movie";
@@ -173,7 +170,7 @@
                     <div class="col s12 m4 l4">
                         <div class="card">
                             <div class="card-image">
-                                <img src="https://image.tmdb.org/t/p/w300/${ movie.poster_path }">
+                                <img src="https://image.tmdb.org/t/p/w300/${ movie.poster_path }" class="mvPoster">
                                 <span class="card-title">${ movie.title }</span>
                             </div>
                             <div class="card-content">
