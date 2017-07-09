@@ -175,10 +175,10 @@
                         datasets: [{
                             label: 'Relevance vs Weight',
                             data: tags.map((t) => { return { x: t.weight, y: t.relevance }; })
+                            fill: false,
                         }],
                     },
                     options: {
-                        fill: false,
                         scales: {
                             xAxes: [{
                                 type: 'linear',
