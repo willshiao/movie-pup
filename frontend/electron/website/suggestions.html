@@ -154,6 +154,17 @@
                 $("#movieCards").append(toAppend);
             }
 
+            function trimDescription(desc) {
+                const pieces = desc.split(' ');
+                let append = '';
+
+                if(pieces.length > 100) {
+                    pieces = pieces.slice(0, 100);
+                    append = '...';
+                }
+                return pieces.join(' ') + append;
+            }
+
 
             function genCardHTML(movie) {
                 var template =
@@ -166,7 +177,7 @@
                                 <span class="card-title">${ movie.title }</span>
                             </div>
                             <div class="card-content">
-                                <p>${ movie.overview }</p>
+                                <p>${ trimDescription(movie.overview) }</p>
                             </div>
                             <div class="card-action">
                                 <a href="https://netflix.com">Watch now</a>
