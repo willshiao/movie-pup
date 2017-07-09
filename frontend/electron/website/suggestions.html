@@ -110,8 +110,9 @@
         </script>
 
         <script type="text/javascript">
-
             const webview = document.getElementById('loaderFrame');
+            const electron = require('electron')
+
 
             webview.addEventListener('ipc-message', event => {
                 if (event.channel == "closeLoader") {
@@ -165,6 +166,7 @@
 
 
             function genCardHTML(movie) {
+                var movieLink = "https://www.amazon.com/s/field-keywords=" + movie.title + " movie";
                 var template =
                 `
                     <!-- CARD BEGINS -->
@@ -178,7 +180,7 @@
                                 <p>${ trimDescription(movie.overview) }</p>
                             </div>
                             <div class="card-action">
-                                <a href="https://netflix.com">Watch now</a>
+                                <a onclick="electron.shell.openExternal('${ movieLink }')">Watch now</a>
                             </div>
                         </div>
                     </div>
