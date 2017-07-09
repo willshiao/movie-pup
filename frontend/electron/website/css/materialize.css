@@ -2895,7 +2895,7 @@ table.bordered > tbody > tr {
 }
 
 table.striped > tbody > tr:nth-child(odd) {
-  background-color: #f2f2f2;
+  background-color: #455a64;
 }
 
 table.striped > tbody > tr > td {
@@ -4242,7 +4242,7 @@ nav .button-collapse i {
 
 nav .brand-logo {
   position: absolute;
-  color: #fff;
+  color: #ffffff;
   display: inline-block;
   font-size: 2.1rem;
   padding: 0;
@@ -4697,6 +4697,7 @@ small {
   cursor: pointer;
 }
 
+
 .card.small, .card.medium, .card.large {
   position: relative;
 }
@@ -4800,7 +4801,7 @@ small {
   right: 0;
   top: 0;
   bottom: 0;
-  width: 100%;
+  width: 300px;
 }
 
 .card .card-image .card-title {
