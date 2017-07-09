@@ -114,7 +114,7 @@ router.post('/history', (req, res) => {
         // Group movies by weight and remove ones with more than 3 items and then flatten
         masterList = _(masterList)
           .groupBy('weight');
-        if(masterList.value().length === 1) {
+        if(masterList.keys().length === 1) {
           return masterList
             .values()
             .flatten()
